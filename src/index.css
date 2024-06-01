@@ -1,0 +1,79 @@
+body {
+  background-color: black;
+  color: rgba(224, 234, 241, 0.628);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.459);
+  z-index: 20;
+  background-color: black;
+  /* box-shadow: 0px 0px 58px rgba(128, 128, 128, 0.615); */
+}
+.child {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  bottom: -90px;
+  border: 1px solid rgba(255, 255, 255, 0.459);
+  background-color: black;
+  /* box-shadow: 0px 0px 58px rgba(128, 128, 128, 0.615); */
+  z-index: 20;
+}
+#graph-container {
+  position: relative;
+}
+.edge {
+  position: absolute;
+  border: 0.1px solid rgb(61, 55, 55);
+}
+form {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 0.5px solid rgba(255, 255, 255, 0.206);
+  display: inline-block;
+  align-items: center;
+  padding: 30px;
+  border-radius: 10px;
+  /* box-shadow: 10px 10px 58px rgba(128, 128, 128, 0.399); */
+}
+h1 {
+  font-weight: 100;
+}
+input {
+  color: white;
+  background-color: black;
+  border: 0.7px solid rgba(191, 164, 164, 0.436);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+button {
+  background-color: black;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  padding: 10px 20px;
+  display: block;
+  color: white;
+  border-radius: 8px;
+  border: 0.4px solid gray;
+}
+button:hover {
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}

@@ -1,3 +1,5 @@
+import "./index.css";
+
 let edgeList = [
   ["a", "b"],
   ["a", "m"],
@@ -7,12 +9,18 @@ let edgeList = [
   ["m", "k"],
   ["g", "d"],
   ["e", "d"],
-  ["q", "d"],
+  ["e", "y"],
+  ["e", "o"],
   ["c", "l"],
+  ["q", "l"],
+  ["c", "p"],
+  ["t", "p"],
+  ["p", "i"],
+  [";", "i"],
+  ["t", "q"],
 ];
 
 const shortestPath = (edges, nodeA, nodeB) => {
-  let reslutPath = [];
   const graph = generateGraph(edges);
   const visited = new Set([nodeA]);
   const queue = [[nodeA, [nodeA]]];
@@ -40,10 +48,19 @@ const generateGraph = (edges) => {
   }
   return graph;
 };
+let graph = [];
+const submitBtn = document.getElementById("submitBtn");
+submitBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const source_val = document.findPath.source.value;
+  const destination_val = document.findPath.destination.value;
+  console.log(source_val, destination_val);
+  graph = shortestPath(edgeList, source_val, destination_val);
+  console.log(graph);
+  visualizeGraph();
+});
 
-const graph = shortestPath(edgeList, "f", "q");
-
-(() => {
+const visualizeGraph = () => {
   const generatedGraph = generateGraph(edgeList);
   const visited = new Set(["a"]);
   const queue = [["a", 0]];
@@ -83,9 +100,51 @@ const graph = shortestPath(edgeList, "f", "q");
           "id",
           `level-${distance + 1}node-${neighbour}`
         );
+        drawEdge(parentElem, neighbourElem, indexOfNeighbor - sizeOfNeighbors);
       }
     }
   }
-})();
+};
 
-console.log(graph, "graph");
+visualizeGraph();
+
+function drawEdge(nodeA, nodeB, translateX) {
+  const rectA = nodeA.getBoundingClientRect();
+  const rectB = nodeB.getBoundingClientRect();
+  const x1 = rectA.left + rectA.width / 2;
+  const y1 = rectA.top + rectA.height / 2;
+  const x2 = rectB.left + rectB.width / 2;
+  const y2 = rectB.top + rectB.height / 2;
+  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+  const edge = document.createElement("div");
+  edge.classList.add("edge");
+  // console.log(nodeA.textContent, nodeB.textContent, "content");
+  edge.style.width = length + "px";
+  edge.style.left = x1 - 90 + translateX * 35 + "px";
+  edge.style.top = y1 + 50 + "px";
+  edge.style.transform = `rotate(${angle}deg)`;
+  document.body.appendChild(edge);
+}
+
+// drawEdge();
+
+// window.addEventListener("resize", () => {
+//   const graph = generateGraph(edgeList);
+//   const visited = new Set(["a"]);
+//   const queue = [["a", 0]];
+//   while (queue.length > 0) {
+//     const [node, distance] = queue.shift();
+//     for (let neighbour of graph[node]) {
+//       if (!visited.has(neighbour)) {
+//         const nodeA = document.getElementById(`level-${distance}node-${node}`);
+//         const nodeB = document.getElementById(
+//           `level-${distance + 1}node-${neighbour}`
+//         );
+//         drawEdge(nodeA, nodeB, 70);
+//         queue.push([neighbour, distance + 1]);
+//         visited.add(neighbour);
+//       }
+//     }
+//   }
+// });
