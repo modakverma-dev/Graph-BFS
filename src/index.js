@@ -23,6 +23,7 @@ let edgeList = [
 const shortestPath = (edges, nodeA, nodeB) => {
   const graph = generateGraph(edges);
   const visited = new Set([nodeA]);
+  if (!graph[nodeA]) return [];
   const queue = [[nodeA, [nodeA]]];
   while (queue.length > 0) {
     const [node, path] = queue.shift();
@@ -70,7 +71,8 @@ const visualizeGraph = () => {
   nodeElem.setAttribute("id", `level-${0}node-a`);
   nodeElem.textContent = "a";
   if (graph.includes("a")) {
-    nodeElem.style.backgroundColor = "red";
+    nodeElem.style.backgroundColor = "white";
+    nodeElem.style.color = "black";
   }
   graphContainer.appendChild(nodeElem);
   while (queue.length > 0) {
@@ -85,7 +87,8 @@ const visualizeGraph = () => {
         neighbourElem.textContent = neighbour;
         neighbourElem.classList.add("child");
         if (graph.includes(neighbour)) {
-          neighbourElem.style.backgroundColor = "red";
+          neighbourElem.style.backgroundColor = "white";
+          neighbourElem.style.color = "black";
         }
         indexOfNeighbor = generatedGraph[node].indexOf(neighbour) + 1;
         neighbourElem.style.transform = `translateX(${
