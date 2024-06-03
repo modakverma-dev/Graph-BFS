@@ -1,8 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 body {
   background-color: black;
   color: rgba(224, 234, 241, 0.628);
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  overflow: auto;
+}
+
+.the-graph-heading {
+  position: fixed;
+  top: 20px;
+  left: 20px;
 }
 
 .node {
@@ -18,7 +29,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.459);
   z-index: 20;
   background-color: black;
-  /* box-shadow: 0px 0px 58px rgba(128, 128, 128, 0.615); */
+  color: white;
 }
 .child {
   position: absolute;
@@ -31,11 +42,13 @@ body {
   bottom: -90px;
   border: 1px solid rgba(255, 255, 255, 0.459);
   background-color: black;
-  /* box-shadow: 0px 0px 58px rgba(128, 128, 128, 0.615); */
   z-index: 20;
+  color: white;
 }
 #graph-container {
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 .edge {
   position: absolute;
@@ -43,22 +56,23 @@ body {
 }
 form {
   background-color: rgba(255, 255, 255, 0.07);
-  border: 0.5px solid rgba(255, 255, 255, 0.206);
+  border: 0.5px solid rgba(255, 255, 255, 0.299);
   display: inline-block;
   align-items: center;
-  padding: 30px;
-  border-radius: 10px;
-  /* box-shadow: 10px 10px 58px rgba(128, 128, 128, 0.399); */
+  padding: 15px;
+  border-radius: 6px;
 }
 h1 {
   font-weight: 100;
 }
 input {
+  width: calc(100% - 40px);
   color: white;
   background-color: black;
-  border: 0.7px solid rgba(191, 164, 164, 0.436);
+  border: 0.7px solid rgba(191, 164, 164, 0.599);
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 5px;
+  margin-top: 8px;
 }
 button {
   background-color: black;
@@ -68,12 +82,22 @@ button {
   height: 40px;
   padding: 10px 20px;
   display: block;
-  color: white;
+  background-color: white;
+  color: black;
   border-radius: 8px;
   border: 0.4px solid gray;
 }
 button:hover {
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   transition: 0.3s;
+}
+.form-container {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  width: 400px;
+  flex-direction: row;
+  gap: 10px;
 }

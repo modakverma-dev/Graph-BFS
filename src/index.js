@@ -1,27 +1,6 @@
 import "./index.css";
 
-let edgeList = [
-  ["a", "b"],
-  ["c", "b"],
-  ["a", "c"],
-  ["a", "m"],
-  ["b", "g"],
-  ["b", "f"],
-  ["m", "k"],
-  ["g", "d"],
-  ["e", "d"],
-  ["e", "y"],
-  ["e", "k"],
-  ["e", "f"],
-  // ["e", "o"],
-  // ["c", "l"],
-  // ["q", "l"],
-  // ["c", "p"],
-  // ["t", "p"],
-  // ["p", "i"],
-  // [";", "i"],
-  // ["q", "d"],
-];
+let edgeList = [["a", "b"]];
 
 const shortestPath = (edges, nodeA, nodeB) => {
   const graph = generateGraph(edges);
@@ -54,20 +33,41 @@ const generateGraph = (edges) => {
 };
 let graph = [];
 const submitBtn = document.getElementById("submitBtn");
+const addNodeBtn = document.getElementById("addNodeBtn");
+
+// Find shortest path
 submitBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const source_val = document.findPath.source.value;
   const destination_val = document.findPath.destination.value;
   graph = shortestPath(edgeList, source_val, destination_val);
-  visualizeGraph();
+  visualizeGraph(edgeList);
+});
+// Add a node to tree
+addNodeBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const parent_val = document.addNode.parent.value;
+  const child_val = document.addNode.child.value;
+  if (!parent_val || !child_val || parent_val === child_val) return;
+  const exists = edgeList.some(
+    ([s, e]) =>
+      (s === parent_val && e === child_val) ||
+      (e === parent_val && s === child_val)
+  );
+  if (!exists) {
+    edgeList = [...edgeList, [parent_val, child_val]];
+  }
+  visualizeGraph(edgeList);
 });
 
-const visualizeGraph = () => {
+const visualizeGraph = (edgeList) => {
+  const graphContainer = document.getElementById("graph-container");
+  graphContainer.innerHTML = "";
+
   const generatedGraph = generateGraph(edgeList);
   const startingElem = Object.keys(generatedGraph)[0];
   const visited = new Set([startingElem]);
   const queue = [[startingElem, 0]];
-  const graphContainer = document.getElementById("graph-container");
   const nodeElem = document.createElement("div");
   nodeElem.classList.add(`node`);
   nodeElem.setAttribute("id", `node-${startingElem}`);
@@ -106,16 +106,27 @@ const visualizeGraph = () => {
   for (let edge of edgeList) {
     const [start, end] = edge;
     let sizeOfNeighbors = generatedGraph[start].length;
-    let indexOfNeighbor = generatedGraph[start].indexOf(end) + 2.1;
+    let indexOfNeighbor = generatedGraph[start].indexOf(end);
     let startelem = document.getElementById(`node-${start}`);
     let endelem = document.getElementById(`node-${end}`);
     drawEdge(startelem, endelem, indexOfNeighbor - sizeOfNeighbors);
   }
+  window.addEventListener("resize", () => {
+    const graphContainer = document.getElementById("graph-container");
+    const edges = graphContainer.querySelectorAll(".edge");
+    edges.forEach((edge) => edge.remove());
+
+    for (let edge of edgeList) {
+      const [start, end] = edge;
+      let startelem = document.getElementById(`node-${start}`);
+      let endelem = document.getElementById(`node-${end}`);
+      drawEdge(startelem, endelem);
+    }
+  });
 };
+visualizeGraph(edgeList);
 
-visualizeGraph();
-
-function drawEdge(nodeA, nodeB, translateX) {
+function drawEdge(nodeA, nodeB) {
   const rectA = nodeA.getBoundingClientRect();
   const rectB = nodeB.getBoundingClientRect();
   const x1 = rectA.left + rectA.width / 2;
@@ -131,25 +142,6 @@ function drawEdge(nodeA, nodeB, translateX) {
   edge.style.top = y1 + "px";
   edge.style.transformOrigin = "0 0";
   edge.style.transform = `rotate(${angle}deg)`;
-  document.body.appendChild(edge);
+  const graphContainer = document.getElementById("graph-container");
+  graphContainer.appendChild(edge);
 }
-
-// window.addEventListener("resize", () => {
-//   const graph = generateGraph(edgeList);
-//   const visited = new Set(["a"]);
-//   const queue = [["a", 0]];
-//   while (queue.length > 0) {
-//     const [node, distance] = queue.shift();
-//     for (let neighbour of graph[node]) {
-//       if (!visited.has(neighbour)) {
-//         const nodeA = document.getElementById(`level-${distance}node-${node}`);
-//         const nodeB = document.getElementById(
-//           `level-${distance + 1}node-${neighbour}`
-//         );
-//         drawEdge(nodeA, nodeB, 70);
-//         queue.push([neighbour, distance + 1]);
-//         visited.add(neighbour);
-//       }
-//     }
-//   }
-// });
