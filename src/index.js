@@ -2,22 +2,25 @@ import "./index.css";
 
 let edgeList = [
   ["a", "b"],
-  ["a", "m"],
+  ["c", "b"],
   ["a", "c"],
+  ["a", "m"],
   ["b", "g"],
   ["b", "f"],
   ["m", "k"],
   ["g", "d"],
   ["e", "d"],
   ["e", "y"],
-  ["e", "o"],
-  ["c", "l"],
-  ["q", "l"],
-  ["c", "p"],
-  ["t", "p"],
-  ["p", "i"],
-  [";", "i"],
-  ["t", "q"],
+  ["e", "k"],
+  ["e", "f"],
+  // ["e", "o"],
+  // ["c", "l"],
+  // ["q", "l"],
+  // ["c", "p"],
+  // ["t", "p"],
+  // ["p", "i"],
+  // [";", "i"],
+  // ["q", "d"],
 ];
 
 const shortestPath = (edges, nodeA, nodeB) => {
@@ -55,22 +58,21 @@ submitBtn.addEventListener("click", (event) => {
   event.preventDefault();
   const source_val = document.findPath.source.value;
   const destination_val = document.findPath.destination.value;
-  console.log(source_val, destination_val);
   graph = shortestPath(edgeList, source_val, destination_val);
-  console.log(graph);
   visualizeGraph();
 });
 
 const visualizeGraph = () => {
   const generatedGraph = generateGraph(edgeList);
-  const visited = new Set(["a"]);
-  const queue = [["a", 0]];
+  const startingElem = Object.keys(generatedGraph)[0];
+  const visited = new Set([startingElem]);
+  const queue = [[startingElem, 0]];
   const graphContainer = document.getElementById("graph-container");
   const nodeElem = document.createElement("div");
   nodeElem.classList.add(`node`);
-  nodeElem.setAttribute("id", `level-${0}node-a`);
-  nodeElem.textContent = "a";
-  if (graph.includes("a")) {
+  nodeElem.setAttribute("id", `node-${startingElem}`);
+  nodeElem.textContent = startingElem;
+  if (graph.includes(startingElem)) {
     nodeElem.style.backgroundColor = "white";
     nodeElem.style.color = "black";
   }
@@ -95,17 +97,19 @@ const visualizeGraph = () => {
           (indexOfNeighbor - sizeOfNeighbors) * 70
         }px)`;
         sizeOfNeighbors--;
-        const parentElem = document.getElementById(
-          `level-${distance}node-${node}`
-        );
+        const parentElem = document.getElementById(`node-${node}`);
         parentElem.appendChild(neighbourElem);
-        neighbourElem.setAttribute(
-          "id",
-          `level-${distance + 1}node-${neighbour}`
-        );
-        drawEdge(parentElem, neighbourElem, indexOfNeighbor - sizeOfNeighbors);
+        neighbourElem.setAttribute("id", `node-${neighbour}`);
       }
     }
+  }
+  for (let edge of edgeList) {
+    const [start, end] = edge;
+    let sizeOfNeighbors = generatedGraph[start].length;
+    let indexOfNeighbor = generatedGraph[start].indexOf(end) + 2.1;
+    let startelem = document.getElementById(`node-${start}`);
+    let endelem = document.getElementById(`node-${end}`);
+    drawEdge(startelem, endelem, indexOfNeighbor - sizeOfNeighbors);
   }
 };
 
@@ -122,15 +126,13 @@ function drawEdge(nodeA, nodeB, translateX) {
   const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
   const edge = document.createElement("div");
   edge.classList.add("edge");
-  // console.log(nodeA.textContent, nodeB.textContent, "content");
   edge.style.width = length + "px";
-  edge.style.left = x1 - 90 + translateX * 35 + "px";
-  edge.style.top = y1 + 50 + "px";
+  edge.style.left = x1 + "px";
+  edge.style.top = y1 + "px";
+  edge.style.transformOrigin = "0 0";
   edge.style.transform = `rotate(${angle}deg)`;
   document.body.appendChild(edge);
 }
-
-// drawEdge();
 
 // window.addEventListener("resize", () => {
 //   const graph = generateGraph(edgeList);
